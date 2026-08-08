@@ -1,0 +1,43 @@
+services:
+  # -------------------------------------------------------------
+  # 1. The MS SQL Database (Where our historical data lives)
+  # -------------------------------------------------------------
+  mssql_db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: mssql_server
+    user: root
+    environment:
+      - ACCEPT_EULA=${ACCEPT_EULA}
+      - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD}  # Change this to your preferred strong password
+      - MSSQL_PID=Developer
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql_data:/var/opt/mssql/data
+
+  # -------------------------------------------------------------
+  # 2. The Inductive Automation Ignition Gateway (Trial Mode)
+  # -------------------------------------------------------------
+  ignition-gateway:
+    image: inductiveautomation/ignition:8.1.33
+    container_name: local-ignition
+    restart: always
+    ports:
+      - "8088:8088" # Standard HTTP port for the web designer
+      - "8043:8043" # HTTPS port
+    environment:
+      - ACCEPT_IGNITION_EULA=${IGNITION_EULA}          # Bypasses the initial license agreement wizard
+      - GATEWAY_ADMIN_USERNAME=${GATEWAY_ADMIN_USERNAME}      # Explicitly sets your login username
+      - GATEWAY_ADMIN_PASSWORD=${GATEWAY_ADMIN_PASSWORD} # Sets your login password
+      - IGNITION_EDITION=standard         # Standard trial edition
+    volumes:
+      - ignition-data:/usr/local/bin/ignition/data # Keeps your gateway setups safe on your hard drive!
+    depends_on:
+      - mssql_db # In Docker Compose, depends_on tells Docker which container service must start first.
+
+# -------------------------------------------------------------
+# 3. Persistent Volumes (The secure vaults on your computer)
+# -------------------------------------------------------------
+volumes:
+  mssql_data:   # Saves your SQL tables, users, and queries
+  ignition-data:   # Saves your Ignition gateway configurations, projects, and connections
