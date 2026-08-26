@@ -1,4 +1,4 @@
-#Containerized Ignition SCADA and MS SQL time-series data pipeline simulating multi-node CIP routing
+# Containerized Ignition SCADA and MS SQL time-series data pipeline simulating multi-node CIP routing
 
 Project Overview: Industrial Automation Sandbox
 Containerized infrastructure running dual Docker services: Ignition Gateway (SCADA) and Microsoft SQL Server.
