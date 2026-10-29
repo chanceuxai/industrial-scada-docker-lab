@@ -13,6 +13,18 @@ This script (`pump_tank_sim.py`) uses `asyncua` to run a local OPC-UA server, al
 * **STOP:** Freezes process physics and disables all actuator commands.
 * **Low-Level Interlock:** If the tank level drops <= 5.0%, the system automatically forces a trip to STOP to prevent dry pump operation.
 
+---
+
+## Gateway Setup & Restoration
+
+To load the pre-configured HMI screens, tag bindings, and OPC-UA connection into your running Ignition Gateway:
+
+1. Open your Ignition Gateway UI at `http://localhost:8088`.
+2. Navigate to **Config** > **System** > **Backup/Restore**.
+3. Select **Restore** and upload the Gateway backup file located at `pump-tank-sim-backup.gwbk`.
+
+---
+
 ## OPC-UA Tags
 
 * **Endpoint:** `opc.tcp://127.0.0.1:4840/freeopcua/server/`
@@ -25,25 +37,25 @@ This script (`pump_tank_sim.py`) uses `asyncua` to run a local OPC-UA server, al
 | `Inlet_Valve_Command` | Boolean | Read/Write | Inlet valve command |
 | `System_Mode` | String | Read/Write | Operational mode (`AUTO`, `MANUAL`, `STOP`) |
 
-## Running Locally
+---
+
+## Running the Simulation Locally
 
 ### Step 1: Create a virtual environment and install dependencies
 
-```
-# 1. Create the virtual environment folder (usually named 'venv')
+```bash
+# Create the virtual environment
 python -m venv venv
 
-# 2. Activate it (tells your terminal to use this specific environment's Python/pip)
+# Activate it
 source venv/bin/activate       # On macOS / Linux
-venv\Scripts\activate          # On Windows (Command Prompt / PowerShell)
+venv\Scripts\activate          # On Windows
 
-# 3. Install the project dependencies locally into this folder
+# Install dependencies
 pip install -r requirements.txt
-
 ```
 
-### Step 2: Run the simulation script
-
-```
+###Step 2: Run the simulation script
+```bash
 python pump_tank_sim.py
 ```
