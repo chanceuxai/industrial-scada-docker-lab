@@ -10,25 +10,32 @@ This script (`pump_tank_sim.py`) uses `asyncua` to run a local OPC-UA server, al
 
 * **AUTO:** Automated differential control. The inlet valve opens below 50.0% level and closes above 70.0%. The pump turns on above 70.0% and turns off below 50.0%.
 * **MANUAL:** Bypasses auto-logic and allows direct HMI toggling of valves and pumps.
-* **STOP:** Freezes process physics and disables all actuator commands.
+* **STOP:** Freezes process physics and disables all actuator commands.If the system is stopped while the level is between 50.0% and 70.0%, it will not automatically resume and requires a manual start..
 * **Low-Level Interlock:** If the tank level drops <= 5.0%, the system automatically forces a trip to STOP to prevent dry pump operation.
+* **High-Level Alarm: If the tank level reaches 100.0%, the tank display turns red to visually indicate an overflow condition.
 
 ---
 
-## Gateway Setup & Restoration
+## Ignition Setup & Restoration
 
-To load the pre-configured HMI screens, tag bindings, and OPC-UA connection into your running Ignition Gateway:
+You can restore the project into your running Ignition Gateway using either the full gateway backup or the project zip file:
 
-1. Open your Ignition Gateway UI at `http://localhost:8088`.
+### Option A: Using the Gateway Backup (`.gwbk`)
+1. Open your Ignition Gateway UI at `http://localhost:8088'.
 2. Navigate to **Config** > **System** > **Backup/Restore**.
-3. Select **Restore** and upload the Gateway backup file located at `pump-tank-sim-backup.gwbk`.
+3. Select **Restore** and upload the Gateway backup file (`pump-tank-sim-backup.gwbk`).
+
+### Option B: Using the Project Zip File
+1. Open your Ignition Gateway UI at `http://localhost:8088'.
+2. Navigate to your **Config** > **Projects** section.
+3. Click **Import Project** and upload your exported project zip file.
 
 ---
 
 ## OPC-UA Tags
 
-* **Endpoint:** `opc.tcp://127.0.0.1:4840/freeopcua/server/`
-* **Namespace:** `http://pumptank.simulation`
+* **Endpoint:** `opc.tcp://127.0.0.1:4840/freeopcua/server/'
+* **Namespace:** `http://pumptank.simulation'
 
 | Tag Name | Type | Access | Description |
 | :--- | :--- | :--- | :--- |
